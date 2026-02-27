@@ -40,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $maps;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?establishments $idestablishments = null;
+    private ?Establishments $idestablishments = null;
 
     public function __construct()
     {
@@ -152,12 +152,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getIdestablishments(): ?establishments
+    public function getIdestablishments(): ?Establishments
     {
         return $this->idestablishments;
     }
 
-    public function setIdestablishments(?establishments $idestablishments): static
+    public function setIdestablishments(?Establishments $idestablishments): static
     {
         $this->idestablishments = $idestablishments;
 
