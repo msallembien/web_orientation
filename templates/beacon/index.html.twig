@@ -1,18 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BeaconController!{% endblock %}
+{% block title %}Beacon{% endblock %}
 
 {% block body %}
 <div class="sidebar">
     <ul>
-        <li><a href="/home">Accueil</a></li>
+        <li><a href="{{ path('app_home') }}">Accueil</a></li>
         <li><a href="#">course</a></li>
-        <li><a href="/parcours">parcours</a></li>
-        <li><a href="/beacon">balise</a></li>
+        <li><a href="{{ path('app_parcours') }}">parcours</a></li>
+        <li><a href="{{ path('app_beacon') }}">balise</a></li>
     </ul>
 </div>
 
 <div class="content">
-    <h1>Bienvenue sur beacon<h1>
+    <h1>Bienvenue sur beacon</h1>
+
+    <a href="{{ path('app_beacon_create') }}" class="btn-add">
+         Ajouter un beacon
+    </a>
 </div>
 {% endblock %}
