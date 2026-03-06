@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Form\BeaconCreateType;
 use Symfony\Component\HttpFoundation\Request;
 
+
 final class BeaconController extends AbstractController
 {
     #[Route('/beacon', name: 'app_beacon')]
