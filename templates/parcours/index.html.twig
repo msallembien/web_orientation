@@ -12,4 +12,14 @@
         <li><a href="{{ path('app_beacon') }}">balise</a></li>
     </ul>
 </div>
+</br>
+</br>
+</br>
+</br>
+<h2>Liste des maps</h2>
+
+{% for map in maps %}
+    <a href="{{ path('app_map_details', {id: map.id}) }}">{{ map.nameMap }}</a>
+{% endfor %}
+
 {% endblock %}
