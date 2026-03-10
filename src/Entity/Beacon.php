@@ -124,4 +124,5 @@ class Beacon
 
         return $this;
     }
+
 }

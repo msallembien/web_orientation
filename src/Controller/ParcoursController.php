@@ -7,9 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+
 use App\Entity\Map as mapEntity;
 use Symfony\UX\Map\Map;
 use App\Form\ParcoursCreateType;
+use App\Entity\Beacon;
 
 
 final class ParcoursController extends AbstractController
@@ -30,6 +32,7 @@ final class ParcoursController extends AbstractController
         return $this->render('parcours/details_parcours.html.twig', [
             'map' => $map,
             'my_map' => $maps,
+            'beacons' => $map->getBeacons(),
         ]);
         
     }

@@ -16,6 +16,15 @@
 </br>
 </br>
 </br>
+{% for beacon in beacons %}
+    <li>{{ beacon.name }} {{ beacon.isPlaced }}</li></br>
+{% else %}
+    <li>Aucune balise associée pour cette map</li>
+{% endfor %}
+</br>
+</br>
+</br>
+</br>
 {{ ux_map(
     center: [51.5074, 0.1278],
     zoom: 3,
