@@ -21,5 +21,8 @@
 {% for map in maps %}
     <a href="{{ path('app_map_details', {id: map.id}) }}">{{ map.nameMap }}</a>
 {% endfor %}
-
+<br>
+<a href="{{ path('app_parcours_create') }}" class="btn-add">
+        Ajouter un beacon
+</a>
 {% endblock %}

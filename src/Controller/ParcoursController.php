@@ -5,9 +5,11 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Map as mapEntity;
 use Symfony\UX\Map\Map;
+use App\Form\ParcoursCreateType;
 
 
 final class ParcoursController extends AbstractController
@@ -30,5 +32,21 @@ final class ParcoursController extends AbstractController
             'my_map' => $maps,
         ]);
         
+    }
+    #[Route('/parcours/create_form', name: 'app_parcours_create')]
+    public function create(Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(ParcoursCreateType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $em->persist($data);
+            $em->flush();
+            return $this->redirectToRoute('app_parcours');
+        }
+        return $this->render('parcours/create_parcours.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

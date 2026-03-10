@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Beacon;
-use App\Entity\Map;
+use App\Entity\Map; 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,6 +26,10 @@ class BeaconCreateType extends AbstractType
             ])
             ->add('createdAt', DateType::class, [
                 'widget' => 'single_text',
+            ])
+            ->add('id_map', EntityType::class, [
+                'class' => Map::class,
+                'choice_label' => 'name_map',
             ])
         ;
     }

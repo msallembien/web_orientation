@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\BeaconRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Map;
 
 #[ORM\Entity(repositoryClass: BeaconRepository::class)]
 class Beacon
