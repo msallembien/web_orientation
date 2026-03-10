@@ -29,10 +29,21 @@ final class ParcoursController extends AbstractController
     public function details(mapEntity $map): Response
     { 
         $maps = new Map();
+        $ready = 0;
+        $r = false;
+        foreach ($map->getBeacons() as $beacon) {
+            if ($beacon->isPlaced() === true) {
+                $ready++;
+            }
+        }
+        if ($ready === count($map->getBeacons())) {
+            $r = true;
+        }
         return $this->render('parcours/details_parcours.html.twig', [
             'map' => $map,
             'my_map' => $maps,
             'beacons' => $map->getBeacons(),
+            'ready' => $r,
         ]);
         
     }

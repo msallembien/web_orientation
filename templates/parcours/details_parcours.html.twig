@@ -22,7 +22,10 @@
     <li>Aucune balise associée pour cette map</li>
 {% endfor %}
 </br>
-</br>
+</br> 
+{% if ready == true %}
+    <input type="submit" name="map_ready"></input>
+{% endif %}
 </br>
 </br>
 {{ ux_map(
