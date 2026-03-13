@@ -8,7 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
-
+use ApiPlatform\Metadata\ApiResource;
+#[ApiResource(
+    normalizationContext: ['groups' => ['map:read']],
+    denormalizationContext: ['groups' => ['map:write']]
+)]
 #[ORM\Entity(repositoryClass: MapRepository::class)]
 class Map
 {

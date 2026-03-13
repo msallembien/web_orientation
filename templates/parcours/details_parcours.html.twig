@@ -7,7 +7,7 @@
 <div class="sidebar">
     <ul>
         <li><a href="{{ path('app_home') }}">Accueil</a></li>
-        <li><a href="#">course</a></li>
+        <li><a href="{{ path('app_race') }}">course</a></li>
         <li><a href="{{ path('app_parcours') }}">parcours</a></li>
         <li><a href="{{ path('app_beacon') }}">balise</a></li>
     </ul>
@@ -24,7 +24,10 @@
 </br>
 </br> 
 {% if ready == true %}
-    <input type="submit" name="map_ready"></input>
+    <form method="post" action="{{ path('app_map_ready', {id: map.id}) }}">
+    <button type="submit">Map Ready</button>
+    </form>
+
 {% endif %}
 </br>
 </br>

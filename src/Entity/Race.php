@@ -6,6 +6,9 @@ use App\Repository\RaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Map;
+use ApiPlatform\Metadata\ApiResource;
+#[ApiResource]
 
 #[ORM\Entity(repositoryClass: RaceRepository::class)]
 class Race
@@ -22,7 +25,7 @@ class Race
     private ?int $nbRunner = null;
 
     #[ORM\ManyToOne(inversedBy: 'races')]
-    private ?map $id_map = null;
+    private ?Map $id_map = null;
 
     /**
      * @var Collection<int, Runner>

@@ -16,6 +16,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['map:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
@@ -37,6 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Map>
      */
     #[ORM\OneToMany(targetEntity: Map::class, mappedBy: 'id_user')]
+    #[MaxDepth(1)] 
     private Collection $maps;
 
     #[ORM\ManyToOne(inversedBy: 'users')]

@@ -63,4 +63,16 @@ final class ParcoursController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    #[Route('/parcours/{id}/ready', name: 'app_map_ready', methods: ['POST'])]
+    public function setReady(mapEntity $map, EntityManagerInterface $em): Response
+    {
+        $map->setStatus('Ready');
+
+        $em->persist($map);
+        $em->flush();
+
+        return $this->redirectToRoute('app_map_details', [
+            'id' => $map->getId()
+        ]);
+    }
 }

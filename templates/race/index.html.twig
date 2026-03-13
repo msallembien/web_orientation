@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Beacon{% endblock %}
+{% block title %}Hello RaceController!{% endblock %}
 
 {% block body %}
 <div class="sidebar">
@@ -11,12 +11,13 @@
         <li><a href="{{ path('app_beacon') }}">balise</a></li>
     </ul>
 </div>
-
-<div class="content">
-    <h1>Bienvenue sur beacon</h1>
-
-    <a href="{{ path('app_beacon_create') }}" class="btn-add">
-         Ajouter un beacon
-    </a>
-</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% for race in races %}
+    <a href="{{ path('app_race_details', {id: race.id}) }}">{{ race.raceName }}</a>
+{% endfor %}
 {% endblock %}

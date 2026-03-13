@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\RunnerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+#[ApiResource]
 
 #[ORM\Entity(repositoryClass: RunnerRepository::class)]
 class Runner
