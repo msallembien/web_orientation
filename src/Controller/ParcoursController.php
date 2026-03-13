@@ -25,7 +25,7 @@ final class ParcoursController extends AbstractController
             'maps' => $map,
         ]);
     }
-    #[Route('/map/details_parcours/{id}', name: 'app_map_details')]
+    #[Route('/parcours/details_parcours/{id}', name: 'app_map_details')]
     public function details(mapEntity $map): Response
     { 
         $maps = new Map();
