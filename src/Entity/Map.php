@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => ['map:read']],
     denormalizationContext: ['groups' => ['map:write']]
@@ -22,9 +23,11 @@ class Map
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['map:read', 'map:write'])]
     private ?string $name_map = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['map:read', 'map:write'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]

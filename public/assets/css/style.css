@@ -34,6 +34,7 @@ body {
 }
 
 .content {
-    margin-top: 80px; /* pour laisser de la place à la sidebar fixe */
+    margin-top: 80px; /* pour la sidebar */
     padding: 20px;
+    min-height: 800px; /* assure de l’espace pour Google Maps */
 }

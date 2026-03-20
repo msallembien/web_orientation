@@ -15,10 +15,16 @@
 <div class="content">
     <h1>Bienvenue sur beacon</h1>
     {% for beacon in beacons %}
-        <a href="{{ path('app_beacon_details', {id: beacon.id}) }}">{{ beacon.name }}</a>
+        <div style="margin-bottom:20px;">
+            <strong>{{ beacon.name }}</strong> - 
+            {% if beacon.isPlaced %}
+                ✔ Placée
+            {% else %}
+                ✖ Non placée
+            {% endif %}
+            <br>
+            <img src="{{ path('app_beacon_qr', {'id': beacon.id}) }}" alt="QR Code {{ beacon.name }}">
+        </div>
     {% endfor %}
-    <a href="{{ path('app_beacon_create') }}" class="btn-add">
-         Ajouter un beacon
-    </a>
 </div>
 {% endblock %}

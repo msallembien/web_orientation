@@ -1,6 +1,6 @@
-/*import './stimulus_bootstrap.js';
-import './bootstrap';
-import '@symfony/ux-map';*/
+import './stimulus_bootstrap.js';
+import './bootstrap'; 
+/*import '@symfony/ux-map'; */
 /*
  * Welcome to your app's main JavaScript file!
  *
