@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260310082434 extends AbstractMigration
+final class Version20260320160425 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20260310082434 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE beacon MODIFY latitude DECIMAL(10,7) DEFAULT NULL, MODIFY longitude DECIMAL(10,7) DEFAULT NULL');
+        $this->addSql('ALTER TABLE beacon CHANGE placed_at placed_at DATETIME DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE map DROP latitude');
+        $this->addSql('ALTER TABLE beacon CHANGE placed_at placed_at DATETIME NOT NULL');
     }
 }

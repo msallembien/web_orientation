@@ -10,28 +10,27 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 class BeaconCreateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('type', ChoiceType::class, [
+                'mapped' => false, // IMPORTANT
+                'choices' => [
+                    'Normale' => 'normal',
+                    'Départ' => 'depart',
+                    'Arrivée' => 'arrivee',
+                ],
+            ])
             ->add('longitude')
             ->add('latitude')
-            ->add('isPlaced', CheckboxType::class, [
-                'required' => false,
-            ])
-            ->add('placedAt', DateType::class, [
-                'widget' => 'single_text',
-            ])
-            ->add('createdAt', DateType::class, [
-                'widget' => 'single_text',
-            ])
             ->add('id_map', EntityType::class, [
                 'class' => Map::class,
                 'choice_label' => 'name_map',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
