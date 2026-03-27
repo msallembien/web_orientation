@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BeaconRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Map;
@@ -37,6 +39,17 @@ class Beacon
 
     #[ORM\ManyToOne(inversedBy: 'beacons')]
     private ?map $id_map = null;
+
+    /**
+     * @var Collection<int, ScanLog>
+     */
+    #[ORM\OneToMany(targetEntity: ScanLog::class, mappedBy: 'id_beacon')]
+    private Collection $scanLogs;
+
+    public function __construct()
+    {
+        $this->scanLogs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -123,6 +136,36 @@ class Beacon
     public function setIdMap(?map $id_map): static
     {
         $this->id_map = $id_map;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ScanLog>
+     */
+    public function getScanLogs(): Collection
+    {
+        return $this->scanLogs;
+    }
+
+    public function addScanLog(ScanLog $scanLog): static
+    {
+        if (!$this->scanLogs->contains($scanLog)) {
+            $this->scanLogs->add($scanLog);
+            $scanLog->setIdBeacon($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScanLog(ScanLog $scanLog): static
+    {
+        if ($this->scanLogs->removeElement($scanLog)) {
+            // set the owning side to null (unless already changed)
+            if ($scanLog->getIdBeacon() === $this) {
+                $scanLog->setIdBeacon(null);
+            }
+        }
 
         return $this;
     }

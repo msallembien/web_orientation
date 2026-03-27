@@ -33,6 +33,9 @@ class Race
     #[ORM\OneToMany(targetEntity: Runner::class, mappedBy: 'id_race')]
     private Collection $runners;
 
+    #[ORM\Column(length: 255)]
+    private ?string $code_race = null;
+
     public function __construct()
     {
         $this->runners = new ArrayCollection();
@@ -105,6 +108,18 @@ class Race
                 $runner->setIdRace(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCodeRace(): ?string
+    {
+        return $this->code_race;
+    }
+
+    public function setCodeRace(string $code_race): static
+    {
+        $this->code_race = $code_race;
 
         return $this;
     }

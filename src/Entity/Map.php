@@ -10,10 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-#[ApiResource(
-    normalizationContext: ['groups' => ['map:read']],
-    denormalizationContext: ['groups' => ['map:write']]
-)]
+#[ApiResource]
 #[ORM\Entity(repositoryClass: MapRepository::class)]
 class Map
 {
