@@ -21,7 +21,7 @@ class Runner
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'runners')]
-    private ?race $id_race = null;
+    private ?Race $id_race = null;
 
     /**
      * @var Collection<int, ScanLog>
@@ -51,12 +51,12 @@ class Runner
         return $this;
     }
 
-    public function getIdRace(): ?race
+    public function getIdRace(): ?Race
     {
         return $this->id_race;
     }
 
-    public function setIdRace(?race $id_race): static
+    public function setIdRace(?Race $id_race): static
     {
         $this->id_race = $id_race;
 

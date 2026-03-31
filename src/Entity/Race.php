@@ -36,6 +36,9 @@ class Race
     #[ORM\Column(length: 255)]
     private ?string $code_race = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
     public function __construct()
     {
         $this->runners = new ArrayCollection();
@@ -120,6 +123,18 @@ class Race
     public function setCodeRace(string $code_race): static
     {
         $this->code_race = $code_race;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

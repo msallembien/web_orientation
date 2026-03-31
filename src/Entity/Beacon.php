@@ -46,6 +46,12 @@ class Beacon
     #[ORM\OneToMany(targetEntity: ScanLog::class, mappedBy: 'id_beacon')]
     private Collection $scanLogs;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $qr_code = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
     public function __construct()
     {
         $this->scanLogs = new ArrayCollection();
@@ -166,6 +172,30 @@ class Beacon
                 $scanLog->setIdBeacon(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQrCode(): ?string
+    {
+        return $this->qr_code;
+    }
+
+    public function setQrCode(?string $qr_code): static
+    {
+        $this->qr_code = $qr_code;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

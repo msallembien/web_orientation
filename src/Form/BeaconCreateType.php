@@ -31,6 +31,7 @@ class BeaconCreateType extends AbstractType
                 'class' => Map::class,
                 'choice_label' => 'name_map',
             ]);
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

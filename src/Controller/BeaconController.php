@@ -9,6 +9,9 @@ use App\Form\BeaconCreateType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Beacon;
+use App\Entity\ScanLog;
+use App\Entity\Runner;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Writer\SvgWriter;
@@ -26,34 +29,73 @@ final class BeaconController extends AbstractController
         ]);
     }
     #[Route('/beacon/beacon_details/{id}', name: 'app_beacon_details')]
-    public function details(Beacon $beacon): Response
+    public function details(Beacon $beacon, EntityManagerInterface $em): Response
     {
-        $builder = new Builder(
-            writer: new SvgWriter(),
-            writerOptions: [],
-            validateResult: false,
-            data: $this->generateUrl(
-                'app_beacon_scan',
-                ['id' => $beacon->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            size: 200,
-            margin: 10
-        );
+    $dataUrl = $this->generateUrl(
+        'app_beacon_scan',
+        ['id' => $beacon->getId()],
+        UrlGeneratorInterface::ABSOLUTE_URL
+    );
 
-        $result = $builder->build();
+    $builder = new Builder(
+        writer: new SvgWriter(),
+        writerOptions: [],
+        validateResult: false,
+        data: $dataUrl,
+        size: 200,
+        margin: 10
+    );
 
-        return $this->render('beacon/beacon_details.html.twig', [
-            'beacon' => $beacon,
-            'qrCode' => $result->getDataUri(),
-        ]);
+    $result = $builder->build();
+
+    // 🔹 Stocker le QR code dans l'entité
+    $beacon->setQrCode($dataUrl);
+    $em->flush();
+
+    return $this->render('beacon/beacon_details.html.twig', [
+        'beacon' => $beacon,
+        'qrCode' => $result->getDataUri(),
+    ]);
     }
-    #[Route('/beacon/scan/{id}', name: 'app_beacon_scan')]
-    public function scan(Beacon $beacon): Response
-    {
-        return $this->render('beacon/scan.html.twig', [
-            'beacon' => $beacon,
-        ]);
+    #[Route('/beacon/scan/{id}', name: 'app_beacon_scan', methods: ['POST'])]
+    public function scan(
+        Beacon $beacon,
+        Request $request,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        // 🔹 CAS 1 : PROF (il envoie latitude + longitude)
+        if (isset($data['latitude'], $data['longitude'])) {
+            $beacon->setLatitude($data['latitude']);
+            $beacon->setLongitude($data['longitude']);
+            $beacon->setIsPlaced(true);
+
+            $em->flush();
+
+            return new JsonResponse(['status' => 'beacon_updated']);
+        }
+
+        // 🔹 CAS 2 : ÉLÈVE (il envoie runner_id)
+        if (isset($data['runner_id'])) {
+            $runner = $em->getRepository(Runner::class)->find($data['runner_id']);
+
+            if (!$runner) {
+                return new JsonResponse(['error' => 'Runner not found'], 404);
+            }
+
+            $scanLog = new ScanLog();
+            $scanLog->setIdRunner($runner);
+            $scanLog->setIdBeacon($beacon);
+            $scanLog->setScanAt(new \DateTimeImmutable());
+
+            $em->persist($scanLog);
+            $em->flush();
+
+            return new JsonResponse(['status' => 'scan_saved']);
+        }
+
+        return new JsonResponse(['error' => 'Invalid data'], 400);
     }
     #[Route('/beacon/scan/save/{id}', name: 'app_beacon_scan_save', methods: ['POST'])]
     public function saveScan(
@@ -70,11 +112,36 @@ final class BeaconController extends AbstractController
         $beacon->setLatitude($data['latitude']);
         $beacon->setLongitude($data['longitude']);
         $beacon->setIsPlaced(true);
-        $beacon->setIsPlaced(true);
 
         $em->flush();
 
         return new Response('OK');
+    }
+    #[Route('/api/scan_logs', name: 'api_scan_logs', methods: ['POST'])]
+    public function apiScanLogs(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (!$data || !isset($data['runner_id'], $data['beacon_id'])) {
+            return new JsonResponse(['error' => 'Invalid data'], 400);
+        }
+
+        $runner = $em->getRepository(Runner::class)->find($data['runner_id']);
+        $beacon = $em->getRepository(Beacon::class)->find($data['beacon_id']);
+
+        if (!$runner || !$beacon) {
+            return new JsonResponse(['error' => 'Runner or Beacon not found'], 404);
+        }
+
+        $scanLog = new ScanLog();
+        $scanLog->setIdRunner($runner);
+        $scanLog->setIdBeacon($beacon);
+        $scanLog->setScanAt(new \DateTimeImmutable());
+
+        $em->persist($scanLog);
+        $em->flush();
+
+        return new JsonResponse(['status' => 'ok']);
     }
     #[Route('/beacon/create_form', name: 'app_beacon_create')]
     public function create(Request $request, EntityManagerInterface $em): Response
