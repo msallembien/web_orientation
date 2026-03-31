@@ -12,6 +12,10 @@ security:
                 property: email
 
     firewalls:
+        beacon_api:
+            pattern: ^/beacon/scan
+            stateless: true
+            jwt: ~
         login:
             pattern: ^/api/login
             stateless: true
@@ -55,7 +59,7 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/races, roles: PUBLIC_ACCESS }
         - { path: ^/api/runners, roles: PUBLIC_ACCESS }
-        - { path: ^/beacon, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/beacon/scan, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/parcours, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/home, roles: IS_AUTHENTICATED_FULLY }

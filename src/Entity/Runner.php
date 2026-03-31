@@ -29,6 +29,12 @@ class Runner
     #[ORM\OneToMany(targetEntity: ScanLog::class, mappedBy: 'id_runner')]
     private Collection $scanLogs;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $date_start = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $date_end = null;
+
     public function __construct()
     {
         $this->scanLogs = new ArrayCollection();
@@ -89,6 +95,30 @@ class Runner
                 $scanLog->setIdRunner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateStart(): ?\DateTime
+    {
+        return $this->date_start;
+    }
+
+    public function setDateStart(?\DateTime $date_start): static
+    {
+        $this->date_start = $date_start;
+
+        return $this;
+    }
+
+    public function getDateEnd(): ?\DateTime
+    {
+        return $this->date_end;
+    }
+
+    public function setDateEnd(?\DateTime $date_end): static
+    {
+        $this->date_end = $date_end;
 
         return $this;
     }

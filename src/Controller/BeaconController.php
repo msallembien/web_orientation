@@ -37,6 +37,9 @@ final class BeaconController extends AbstractController
         UrlGeneratorInterface::ABSOLUTE_URL
     );
 
+    // S’assurer que c’est HTTPS
+    $dataUrl = preg_replace('#^http:#', 'https:', $dataUrl);
+
     $builder = new Builder(
         writer: new SvgWriter(),
         writerOptions: [],
@@ -133,15 +136,30 @@ final class BeaconController extends AbstractController
             return new JsonResponse(['error' => 'Runner or Beacon not found'], 404);
         }
 
+        // 🔹 Date actuelle
+        $now = new \DateTimeImmutable();
+
+        // 🔹 Vérifie le type de balise
+        if ($beacon->getStatus() === 'depart' && $runner->getDateStart() === null) {
+            $runner->setDateStart($now);
+        } elseif ($beacon->getStatus() === 'arrivee' && $runner->getDateEnd() === null) {
+            $runner->setDateEnd($now);
+        }
+
+        // 🔹 Enregistre le scan log
         $scanLog = new ScanLog();
         $scanLog->setIdRunner($runner);
         $scanLog->setIdBeacon($beacon);
-        $scanLog->setScanAt(new \DateTimeImmutable());
+        $scanLog->setScanAt($now);
 
         $em->persist($scanLog);
         $em->flush();
 
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse([
+            'status' => 'ok',
+            'date_start' => $runner->getDateStart(),
+            'date_end' => $runner->getDateEnd()
+        ]);
     }
     #[Route('/beacon/create_form', name: 'app_beacon_create')]
     public function create(Request $request, EntityManagerInterface $em): Response
@@ -152,8 +170,8 @@ final class BeaconController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $beacon = $form->getData();
             $type = $form->get('type')->getData();
-
-            // 🔥 Compter les balises existantes du même type
+            $beacon->setstatus($type);
+           
             if ($type === 'depart') {
                 $count = $em->createQueryBuilder()
                 ->select('COUNT(b.id)')
