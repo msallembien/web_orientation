@@ -63,7 +63,7 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/parcours, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/home, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         
 
 
