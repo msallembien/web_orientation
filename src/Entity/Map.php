@@ -45,7 +45,7 @@ class Map
     /**
      * @var Collection<int, Beacon>
      */
-    #[ORM\OneToMany(targetEntity: Beacon::class, mappedBy: 'id_map')]
+    #[ORM\OneToMany(targetEntity: Beacon::class, cascade: ['persist'], mappedBy: 'id_map')]
     private Collection $beacons;
 
     public function __construct()

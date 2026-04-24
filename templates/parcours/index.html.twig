@@ -1,28 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ParcoursController!{% endblock %}
+{% block title %}Parcours{% endblock %}
 
 {% block body %}
 
-<div class="sidebar">
-    <ul>
-        <li><a href="{{ path('app_home') }}">Accueil</a></li>
-        <li><a href="{{ path('app_race') }}">course</a></li>
-        <li><a href="{{ path('app_parcours') }}">parcours</a></li>
-        <li><a href="{{ path('app_beacon') }}">balise</a></li>
-    </ul>
-</div>
-</br>
-</br>
-</br>
-</br>
-<h2>Liste des maps</h2>
+<!-- NAVBAR -->
+<div class="navbar">
 
-{% for map in maps %}
-    <a href="{{ path('app_map_details', {id: map.id}) }}">{{ map.nameMap }}</a>
-{% endfor %}
-<br>
-<a href="{{ path('app_parcours_create') }}" class="btn-add">
-        Ajouter un parcours
-</a>
+    <div class="nav-left">
+        <div class="logo">e-CO</div>
+
+        <ul class="nav-links">
+            <li><a href="{{ path('app_race') }}">Courses</a></li>
+            <li>
+                <a href="{{ path('app_parcours') }}"
+                   class="{{ app.request.attributes.get('_route') == 'app_parcours' ? 'active' : '' }}">
+                   Parcours
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="nav-right">
+        <a href="#" class="btn-logout">Déconnexion</a>
+        <span class="gear">⚙</span>
+    </div>
+
+</div>
+
+<!-- CONTENU -->
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="topbar">
+        <h1>Parcours</h1>
+        <a href="{{ path('app_parcours_create') }}" class="btn-add">+ Nouveau Parcours</a>
+    </div>
+
+    <!-- FILTRE -->
+    <div class="filter-bar">
+        <input type="text" placeholder="Filtrer..." />
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+        {% for map in maps %}
+            <div class="card">
+
+                <div class="card-header">
+                    <span class="status">En cours de création</span>
+                    <h3>{{ map.nameMap }}</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="infos">
+                        <span>balises</span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <a href="{{ path('app_map_details', {id: map.id}) }}" class="btn">Voir</a>
+                    <a href="{{ path('qr_code_parcours', {id: map.id}) }}" class="btn">QR codes</a>
+                    <a href="#" class="btn">Modifier</a>
+                    <a href="#" class="btn delete">🗑</a>
+                </div>
+
+            </div>
+        {% else %}
+            <p>Aucun parcours trouvé.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
 {% endblock %}

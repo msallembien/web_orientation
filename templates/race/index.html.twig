@@ -1,23 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RaceController!{% endblock %}
+{% block title %}Courses{% endblock %}
 
 {% block body %}
-<div class="sidebar">
-    <ul>
-        <li><a href="{{ path('app_home') }}">Accueil</a></li>
-        <li><a href="{{ path('app_race') }}">course</a></li>
-        <li><a href="{{ path('app_parcours') }}">parcours</a></li>
-        <li><a href="{{ path('app_beacon') }}">balise</a></li>
-    </ul>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <div class="nav-left">
+        <div class="logo">e-CO</div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="{{ path('app_race') }}"
+                   class="{{ app.request.attributes.get('_route') == 'app_race' ? 'active' : '' }}">
+                   Courses
+                </a>
+            </li>
+            <li><a href="{{ path('app_parcours') }}">Parcours</a></li>
+
+        </ul>
+    </div>
+
+    <div class="nav-right">
+        <a href="#" class="btn-logout">Déconnexion</a>
+        <span class="gear">⚙</span>
+    </div>
+
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-{% for race in races %}
-    <a href="{{ path('app_race_details', {id: race.id}) }}">{{ race.raceName }}</a>
-{% endfor %}
+
+<!-- CONTENU -->
+<div class="container">
+
+    <h1>Courses</h1>
+
+    <!-- FILTRE -->
+    <div class="filter-bar">
+        <input type="text" placeholder="🔍 Filtrer" />
+    </div>
+
+    <!-- TABLEAU -->
+    <div class="table-container">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Nom Course</th>
+                    <th>Nom Parcours</th>
+                    <th>Nb. part.</th>
+                    <th>Créé le</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for race in races %}
+                    <tr>
+                        <td>{{ race.raceName }}</td>
+                        <td>{{ race.parcours.nameMap ?? '—' }}</td>
+                        <td>{{ race.nbParticipants ?? '—' }}</td>
+
+                        <td class="actions">
+                            <a href="{{ path('app_race_details', {id: race.id}) }}" class="btn edit">✏️</a>
+                            <a href="#" class="btn delete">🗑</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">Aucune course trouvée</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
 {% endblock %}

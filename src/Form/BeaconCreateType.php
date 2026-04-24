@@ -24,13 +24,9 @@ class BeaconCreateType extends AbstractType
                     'Départ' => 'depart',
                     'Arrivée' => 'arrivee',
                 ],
-            ])
-            ->add('longitude')
-            ->add('latitude')
-            ->add('id_map', EntityType::class, [
-                'class' => Map::class,
-                'choice_label' => 'name_map',
             ]);
+
+
             
     }
 

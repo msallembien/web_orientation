@@ -3,11 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Map;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Form\BeaconCreateType;
 
 class ParcoursCreateType extends AbstractType
 {
@@ -16,11 +16,12 @@ class ParcoursCreateType extends AbstractType
         $builder
             ->add('name_map')
             ->add('description')
-            ->add('status')
-            ->add('createdAt')
-            ->add('id_user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+            ->add('beacons', CollectionType::class, [
+                'entry_type' => BeaconCreateType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'prototype' => true,
             ])
         ;
     }

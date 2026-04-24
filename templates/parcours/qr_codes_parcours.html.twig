@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block title %}Parcours{% endblock %}
+
+{% block body %}
+<div class="navbar">
+
+    <div class="nav-left">
+        <div class="logo">e-CO</div>
+
+        <ul class="nav-links">
+            <li><a href="{{ path('app_race') }}">Courses</a></li>
+            <li>
+                <a href="{{ path('app_parcours') }}"
+                   class="{{ app.request.attributes.get('_route') == 'app_parcours' ? 'active' : '' }}">
+                   Parcours
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="nav-right">
+        <a href="#" class="btn-logout">Déconnexion</a>
+        <span class="gear">⚙</span>
+    </div>
+
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h1>QR Codes du parcours {{ map.NameMap }}</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    {% for item in qrCodes %}
+        <div style="border: 1px solid #ccc; padding: 10px; text-align: center;">
+            <h3>{{ item.beacon.name }}</h3>
+
+            <img src="{{ item.qr }}" alt="QR Code">
+
+            <p>Type : {{ item.beacon.status }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
