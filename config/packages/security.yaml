@@ -58,6 +58,7 @@ security:
         - { path: ^/api/scan_logs, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/races, roles: PUBLIC_ACCESS }
+        - { path: ^/api/beacon, roles: PUBLIC_ACCESS }
         - { path: ^/api/runners, roles: PUBLIC_ACCESS }
         - { path: ^/beacon/scan, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/admin, roles: ROLE_ADMIN }

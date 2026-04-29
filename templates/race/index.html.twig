@@ -38,7 +38,11 @@
     <div class="filter-bar">
         <input type="text" placeholder="🔍 Filtrer" />
     </div>
-
+    <div style="margin-bottom: 20px;">
+        <a href="{{ path('app_race_create') }}" class="btn edit">
+            ➕ Nouvelle course
+        </a>
+    </div>
     <!-- TABLEAU -->
     <div class="table-container">
         <table class="styled-table">
@@ -47,7 +51,6 @@
                     <th>Nom Course</th>
                     <th>Nom Parcours</th>
                     <th>Nb. part.</th>
-                    <th>Créé le</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -57,10 +60,10 @@
                     <tr>
                         <td>{{ race.raceName }}</td>
                         <td>{{ race.parcours.nameMap ?? '—' }}</td>
-                        <td>{{ race.nbParticipants ?? '—' }}</td>
+                        <td>{{ race.nbRunner ?? '—' }}</td>
 
                         <td class="actions">
-                            <a href="{{ path('app_race_details', {id: race.id}) }}" class="btn edit">✏️</a>
+                            <a href="{{ path('app_race_details', {id: race.id}) }}" class="btn edit">voir courses</a>
                             <a href="#" class="btn delete">🗑</a>
                         </td>
                     </tr>

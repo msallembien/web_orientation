@@ -3,7 +3,27 @@
 {% block title %}Hello RaceController!{% endblock %}
 
 {% block body %}
+<h2>Classement</h2>
 
-Mettre ici maps a droite avec ligne balise balise depart, arrivé <br>
-si finis  mettre stats dans rubrique a gauche (nb km/h moyen, nb balise, meilleurs temps fais par eleve, moyenne des temps, )
+<table>
+    <tr>
+        <th>#</th>
+        <th>Nom</th>
+        <th>Temps</th>
+    </tr>
+
+    {% for result in results %}
+        <tr onclick="window.location='{{ path('app_runner_details', {id: result.runner.id}) }}'">
+            <td>{{ loop.index }}</td>
+            <td>{{ result.runner.name }}</td>
+            <td>
+                {% if result.time %}
+                    {{ result.time }} sec
+                {% else %}
+                    ❌ Non terminé
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}

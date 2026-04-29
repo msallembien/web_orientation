@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RaceController!{% endblock %}
+
+{% block body %}
+<h2>{{ runner.name }}</h2>
+
+<div id="map" style="height:500px;"></div>
+
+<script>
+const logs = {{ logs|json_encode|raw }};
+const path = {{ path|json_encode|raw }};
+function initMap() {
+    const center = path.length > 0 ? path[0] : { lat: 48.8566, lng: 2.3522 };
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 14,
+        center: center
+    });
+
+    // 🟦 TRAJET (ligne)
+    const routePath = new google.maps.Polyline({
+        path: path,
+        geodesic: true,
+        strokeColor: "#4da3ff",
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+    });
+
+    routePath.setMap(map);
+
+    // ➡️ FLÈCHES (sens du parcours)
+    routePath.setOptions({
+        icons: [{
+            icon: {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 2,
+                strokeColor: "#4da3ff"
+            },
+            offset: "100%",
+            repeat: "120px"
+        }]
+    });
+
+    // ⚪ GPS TRACK (petits points simples)
+    path.forEach((p) => {
+        new google.maps.Marker({
+            position: p,
+            map: map,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 2,
+                fillColor: "#999",
+                fillOpacity: 0.6,
+                strokeWeight: 0
+            }
+        });
+    });
+
+    // 📍 SCANS (seulement balises)
+    logs.forEach((log) => {
+
+        if (!log.isBeacon) return; // ❌ ignore GPS
+
+        let icon;
+
+        if (log.status === 'depart') {
+            icon = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+        } 
+        else if (log.status === 'arrivee') {
+            icon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+        } 
+        else {
+            icon = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
+        }
+
+        new google.maps.Marker({
+            position: { lat: log.lat, lng: log.lng },
+            map: map,
+            icon: icon
+        });
+    });
+}
+</script>
+
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap">
+</script>
+{% endblock %}

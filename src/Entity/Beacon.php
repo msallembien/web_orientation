@@ -52,6 +52,9 @@ class Beacon
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $accepted_distance = null;
+
     public function __construct()
     {
         $this->scanLogs = new ArrayCollection();
@@ -196,6 +199,18 @@ class Beacon
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAcceptedDistance(): ?string
+    {
+        return $this->accepted_distance;
+    }
+
+    public function setAcceptedDistance(?string $accepted_distance): static
+    {
+        $this->accepted_distance = $accepted_distance;
 
         return $this;
     }
