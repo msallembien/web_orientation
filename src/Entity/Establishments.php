@@ -26,9 +26,16 @@ class Establishments
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'idestablishments')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, Map>
+     */
+    #[ORM\OneToMany(targetEntity: Map::class, mappedBy: 'establishment')]
+    private Collection $maps;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->maps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,6 +79,36 @@ class Establishments
             // set the owning side to null (unless already changed)
             if ($user->getIdestablishments() === $this) {
                 $user->setIdestablishments(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Map>
+     */
+    public function getMaps(): Collection
+    {
+        return $this->maps;
+    }
+
+    public function addMap(Map $map): static
+    {
+        if (!$this->maps->contains($map)) {
+            $this->maps->add($map);
+            $map->setEstablishment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMap(Map $map): static
+    {
+        if ($this->maps->removeElement($map)) {
+            // set the owning side to null (unless already changed)
+            if ($map->getEstablishment() === $this) {
+                $map->setEstablishment(null);
             }
         }
 

@@ -48,6 +48,9 @@ class Map
     #[ORM\OneToMany(targetEntity: Beacon::class, cascade: ['persist'], mappedBy: 'id_map')]
     private Collection $beacons;
 
+    #[ORM\ManyToOne(inversedBy: 'maps')]
+    private ?Establishments $establishment = null;
+
     public function __construct()
     {
         $this->races = new ArrayCollection();
@@ -175,6 +178,18 @@ class Map
                 $beacon->setIdMap(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEstablishment(): ?Establishments
+    {
+        return $this->establishment;
+    }
+
+    public function setEstablishment(?Establishments $establishment): static
+    {
+        $this->establishment = $establishment;
 
         return $this;
     }
