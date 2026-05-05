@@ -1,11 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RaceController!{% endblock %}
+{% block title %}Trace runner{% endblock %}
 
 {% block body %}
-<h2>{{ runner.name }}</h2>
+<div class="navbar">
+    <div class="nav-left">
+        <a href="{{ path('app_race') }}" class="logo">e-CO</a>
+        <ul class="nav-links">
+            <li><a href="{{ path('app_race') }}" class="active">Courses</a></li>
+            <li><a href="{{ path('app_parcours') }}">Parcours</a></li>
+        </ul>
+    </div>
+    <div class="nav-right">
+        <a href="{{ path('app_logout') }}" class="btn-logout">Déconnexion</a>
+        <span class="gear">⚙</span>
+    </div>
+</div>
 
-<div id="map" style="height:500px;"></div>
+<div class="container">
+    <div class="page-card">
+        <div class="topbar">
+            <div>
+                <h2>{{ runner.name }}</h2>
+                <p class="subtitle">Suivi du parcours et points scannés</p>
+            </div>
+            <a href="{{ path('app_race') }}" class="btn edit">Retour</a>
+        </div>
+        <div class="map-container">
+            <div id="map" style="height:500px;"></div>
+        </div>
+    </div>
+</div>
 
 <script>
 const logs = {{ logs|json_encode|raw }};
@@ -18,31 +43,28 @@ function initMap() {
         center: center
     });
 
-    // 🟦 TRAJET (ligne)
     const routePath = new google.maps.Polyline({
         path: path,
         geodesic: true,
-        strokeColor: "#4da3ff",
+        strokeColor: "#5f744d",
         strokeOpacity: 1.0,
         strokeWeight: 3,
     });
 
     routePath.setMap(map);
 
-    // ➡️ FLÈCHES (sens du parcours)
     routePath.setOptions({
         icons: [{
             icon: {
                 path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                 scale: 2,
-                strokeColor: "#4da3ff"
+                strokeColor: "#5f744d"
             },
             offset: "100%",
             repeat: "120px"
         }]
     });
 
-    // ⚪ GPS TRACK (petits points simples)
     path.forEach((p) => {
         new google.maps.Marker({
             position: p,
@@ -50,28 +72,23 @@ function initMap() {
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 2,
-                fillColor: "#999",
+                fillColor: "#8a7d6e",
                 fillOpacity: 0.6,
                 strokeWeight: 0
             }
         });
     });
 
-    // 📍 SCANS (seulement balises)
     logs.forEach((log) => {
-
-        if (!log.isBeacon) return; // ❌ ignore GPS
+        if (!log.isBeacon) return;
 
         let icon;
-
         if (log.status === 'depart') {
             icon = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
-        } 
-        else if (log.status === 'arrivee') {
+        } else if (log.status === 'arrivee') {
             icon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-        } 
-        else {
-            icon = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
+        } else {
+            icon = "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
         }
 
         new google.maps.Marker({
@@ -83,7 +100,5 @@ function initMap() {
 }
 </script>
 
-<script async
-    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap">
-</script>
+<script async src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"></script>
 {% endblock %}

@@ -1,0 +1,33 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5efe4"/>
+      <stop offset="1" stop-color="#e8ddcc"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#g1)"/>
+  <g opacity="0.33" stroke="#a38e76" stroke-width="2.2">
+    <path d="M40 120 C 300 40, 450 220, 760 150 C 1040 90, 1220 230, 1560 150"/>
+    <path d="M20 240 C 280 170, 490 320, 760 260 C 1020 200, 1260 350, 1540 290"/>
+    <path d="M0 380 C 240 320, 490 450, 740 410 C 980 370, 1290 490, 1600 430"/>
+    <path d="M30 530 C 280 470, 490 620, 760 580 C 1030 540, 1300 670, 1570 620"/>
+    <path d="M0 700 C 260 640, 480 780, 740 740 C 1030 700, 1280 840, 1600 790"/>
+    <path d="M20 870 C 280 810, 520 950, 790 910 C 1080 870, 1300 980, 1600 950"/>
+  </g>
+  <g opacity="0.26" stroke="#6c5a48" stroke-width="3" stroke-dasharray="8 8">
+    <path d="M200 820 C 340 760, 420 640, 580 620 C 780 600, 840 460, 1080 460 C 1260 460, 1330 350, 1450 250"/>
+    <circle cx="580" cy="620" r="22" fill="none"/>
+    <circle cx="1080" cy="460" r="22" fill="none"/>
+    <circle cx="1450" cy="250" r="22" fill="none"/>
+  </g>
+  <g opacity="0.24" fill="#78614d">
+    <circle cx="1320" cy="780" r="96"/>
+    <circle cx="1320" cy="780" r="65" fill="#f5efe4"/>
+    <path d="M1320 700 L1346 780 L1320 760 L1294 780 Z"/>
+  </g>
+  <g opacity="0.2" fill="#7d6a56">
+    <path d="M120 960 L155 860 L190 960 Z"/>
+    <path d="M170 960 L205 850 L240 960 Z"/>
+    <rect x="176" y="960" width="10" height="24"/>
+  </g>
+</svg>
