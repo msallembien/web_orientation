@@ -11,6 +11,7 @@ use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\SvgWriter;
 use Endroid\QrCode\QrCode;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use App\Entity\Map as mapEntity;
 use Symfony\UX\Map\Map;
@@ -125,6 +126,45 @@ final class ParcoursController extends AbstractController
         return $this->render('parcours/create_parcours.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/parcours/{id}/edit', name: 'app_parcours_edit', methods: ['GET', 'POST'])]
+    public function edit(mapEntity $map, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(ParcoursCreateType::class, $map);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('app_parcours');
+        }
+
+        return $this->render('parcours/edit_parcours.html.twig', [
+            'form' => $form->createView(),
+            'map' => $map,
+        ]);
+    }
+
+    #[Route('/parcours/{id}/delete', name: 'app_parcours_delete', methods: ['POST'])]
+    public function delete(mapEntity $map, Request $request, EntityManagerInterface $em): RedirectResponse
+    {
+        if (!$this->isCsrfTokenValid('delete_map_' . $map->getId(), (string) $request->request->get('_token'))) {
+            return $this->redirectToRoute('app_parcours');
+        }
+
+        if ($map->getRaces()->count() > 0) {
+            return $this->redirectToRoute('app_parcours');
+        }
+
+        foreach ($map->getBeacons() as $beacon) {
+            $em->remove($beacon);
+        }
+
+        $em->remove($map);
+        $em->flush();
+
+        return $this->redirectToRoute('app_parcours');
     }
     #[Route('/parcours/{id}/ready', name: 'app_map_ready', methods: ['POST'])]
     public function setReady(mapEntity $map, EntityManagerInterface $em): Response

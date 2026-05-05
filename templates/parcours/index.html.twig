@@ -63,8 +63,11 @@
                 <div class="card-footer">
                     <a href="{{ path('app_map_details', {id: map.id}) }}" class="btn">Voir</a>
                     <a href="{{ path('qr_code_parcours', {id: map.id}) }}" class="btn">QR codes</a>
-                    <a href="#" class="btn">Modifier</a>
-                    <a href="#" class="btn delete">🗑</a>
+                    <a href="{{ path('app_parcours_edit', {id: map.id}) }}" class="btn btn-sm edit">Modifier</a>
+                    <form method="post" action="{{ path('app_parcours_delete', {id: map.id}) }}" class="inline-form" onsubmit="return confirm('Supprimer ce parcours ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_map_' ~ map.id) }}">
+                        <button type="submit" class="btn btn-sm delete">Supprimer</button>
+                    </form>
                 </div>
 
             </div>

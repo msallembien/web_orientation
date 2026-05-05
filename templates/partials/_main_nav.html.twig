@@ -1,0 +1,23 @@
+<div class="navbar">
+    <div class="nav-left">
+        <a href="{{ path('app_race') }}" class="logo">e-CO</a>
+        <ul class="nav-links">
+            <li>
+                <a href="{{ path('app_race') }}"
+                   class="{{ app.request.attributes.get('_route') starts with 'app_race' ? 'active' : '' }}">
+                    Courses
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_parcours') }}"
+                   class="{{ app.request.attributes.get('_route') starts with 'app_parcours' or app.request.attributes.get('_route') starts with 'app_map' ? 'active' : '' }}">
+                    Parcours
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-right">
+        <a href="{{ path('app_logout') }}" class="btn-logout">Déconnexion</a>
+        <span class="gear">⚙</span>
+    </div>
+</div>

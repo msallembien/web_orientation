@@ -195,6 +195,12 @@ h3 {
     font-size: 0.92rem;
 }
 
+.btn.btn-sm {
+    padding: 6px 10px;
+    font-size: 0.76rem;
+    border-radius: 8px;
+}
+
 .filter-bar {
     margin: 16px 0;
 }
@@ -276,6 +282,59 @@ h3 {
     border-top: 1px solid #eadfce;
     padding: 10px 12px 12px;
     background: #fbf7ef;
+}
+
+.card-footer .btn {
+    padding: 6px 10px;
+    font-size: 0.76rem;
+}
+
+.inline-form {
+    margin: 0;
+}
+
+.form-card {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.form-stack {
+    display: grid;
+    gap: 14px;
+}
+
+.field-group {
+    display: grid;
+    gap: 6px;
+}
+
+.field-group label {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.form-section {
+    border: 1px solid #eadcc8;
+    border-radius: 12px;
+    background: #fbf6ee;
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+.field-inline {
+    display: grid;
+    gap: 6px;
+    max-width: 320px;
+}
+
+.feedback-box {
+    min-height: 24px;
+    margin: 0;
+    font-size: 0.85rem;
+    color: #2f6a3e;
+    font-weight: 600;
 }
 
 .table-container {
@@ -543,6 +602,110 @@ h3 {
     text-align: center;
     color: var(--muted);
     padding: 24px 12px;
+}
+
+.race-code,
+.race-code-value {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    background: #efe5d7;
+    color: #4e3d2f;
+    border: 1px solid #ddccb6;
+    border-radius: 8px;
+    letter-spacing: 0.06em;
+    font-weight: 800;
+}
+
+.race-code {
+    padding: 2px 8px;
+    font-size: 0.82rem;
+}
+
+.race-code-value {
+    padding: 6px 10px;
+    font-size: 1.05rem;
+    margin-top: 8px;
+}
+
+.qr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.qr-card {
+    border: 1px solid #decfb9;
+    border-radius: 12px;
+    background: #fffdfa;
+    padding: 12px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.qr-card h3 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.qr-meta {
+    margin: 0 0 8px;
+    color: var(--muted);
+    font-size: 0.82rem;
+}
+
+.qr-card img {
+    width: 100%;
+    max-width: 190px;
+    height: auto;
+    margin: 8px auto;
+    display: block;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e7dbc9;
+    padding: 8px;
+}
+
+.qr-helper {
+    margin: 6px 0 0;
+    color: #5f5b52;
+    font-size: 0.78rem;
+}
+
+@media print {
+    body {
+        background: #fff;
+    }
+
+    .navbar,
+    .print-hide {
+        display: none !important;
+    }
+
+    .container {
+        margin-top: 0;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .page-card {
+        box-shadow: none;
+        border: 0;
+        padding: 0;
+        background: #fff;
+    }
+
+    .qr-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .qr-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        box-shadow: none;
+    }
 }
 
 @media (max-width: 990px) {

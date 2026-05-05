@@ -33,7 +33,7 @@
         <div class="topbar">
             <div>
                 <h1>Classement de la course</h1>
-                <p class="subtitle">Liste des runners et accès au détail de leur trace GPS.</p>
+                <p class="subtitle">Code course : <span class="race-code">{{ race.codeRace }}</span> - Liste des runners et accès au détail de leur trace GPS.</p>
             </div>
             <a href="{{ path('app_race') }}" class="btn edit">Retour aux courses</a>
         </div>
@@ -85,6 +85,10 @@
             </div>
 
             <aside class="race-sidebar">
+                <div class="stat-card">
+                    <p class="stat-label">Code course</p>
+                    <p class="stat-value race-code-value">{{ race.codeRace }}</p>
+                </div>
                 <div class="stat-card">
                     <p class="stat-label">Runners</p>
                     <p class="stat-value">{{ results|length }}</p>

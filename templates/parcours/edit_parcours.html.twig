@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un parcours{% endblock %}
+
+{% block body %}
+{% include 'partials/_main_nav.html.twig' %}
+<div class="container">
+    <div class="page-card form-card">
+        <div class="topbar">
+            <div>
+                <h1>Modifier le parcours</h1>
+                <p class="subtitle">Mettez a jour les informations du parcours "{{ map.nameMap }}".</p>
+            </div>
+            <a href="{{ path('app_parcours') }}" class="btn">Retour</a>
+        </div>
+
+        <div class="form-stack">
+            {{ form_start(form) }}
+                <div class="field-group">
+                    <label for="{{ form.name_map.vars.id }}">Nom</label>
+                    {{ form_widget(form.name_map) }}
+                </div>
+
+                <div class="field-group">
+                    <label for="{{ form.description.vars.id }}">Description</label>
+                    {{ form_widget(form.description) }}
+                </div>
+
+                <button type="submit" class="btn edit">Enregistrer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

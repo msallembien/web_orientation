@@ -2,46 +2,33 @@
 {% block title %}Parcours{% endblock %}
 
 {% block body %}
-<div class="navbar">
+{% include 'partials/_main_nav.html.twig' %}
 
-    <div class="nav-left">
-        <div class="logo">e-CO</div>
-
-        <ul class="nav-links">
-            <li><a href="{{ path('app_race') }}">Courses</a></li>
-            <li>
-                <a href="{{ path('app_parcours') }}"
-                   class="{{ app.request.attributes.get('_route') == 'app_parcours' ? 'active' : '' }}">
-                   Parcours
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="nav-right">
-        <a href="#" class="btn-logout">Déconnexion</a>
-        <span class="gear">⚙</span>
-    </div>
-
-</div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h1>QR Codes du parcours {{ map.NameMap }}</h1>
-
-<div style="display: flex; flex-wrap: wrap; gap: 20px;">
-    {% for item in qrCodes %}
-        <div style="border: 1px solid #ccc; padding: 10px; text-align: center;">
-            <h3>{{ item.beacon.name }}</h3>
-
-            <img src="{{ item.qr }}" alt="QR Code">
-
-            <p>Type : {{ item.beacon.status }}</p>
+<div class="container">
+    <div class="page-card">
+        <div class="topbar print-hide">
+            <div>
+                <h1>QR codes du parcours {{ map.nameMap }}</h1>
+                <p class="subtitle">Imprimez cette page puis choisissez "Enregistrer au format PDF".</p>
+            </div>
+            <div class="actions">
+                <a href="{{ path('app_parcours') }}" class="btn">Retour</a>
+                <button type="button" class="btn edit" onclick="window.print()">Télécharger en PDF</button>
+            </div>
         </div>
-    {% endfor %}
+
+        <div class="qr-grid">
+            {% for item in qrCodes %}
+                <article class="qr-card">
+                    <h3>{{ item.beacon.name }}</h3>
+                    <p class="qr-meta">Type : {{ item.beacon.status|capitalize }}</p>
+                    <img src="{{ item.qr }}" alt="QR code {{ item.beacon.name }}">
+                    <p class="qr-helper">Scannez pour valider le passage.</p>
+                </article>
+            {% else %}
+                <div class="empty-state">Aucun QR code disponible pour ce parcours.</div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}

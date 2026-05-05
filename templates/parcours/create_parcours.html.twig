@@ -1,42 +1,51 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Créer un parcours{% endblock %}
+
 {% block body %}
+{% include 'partials/_main_nav.html.twig' %}
 
-<h2>Créer un nouveau Parcours</h2>
+<div class="container">
+    <div class="page-card form-card">
+        <div class="topbar">
+            <div>
+                <h1>Créer un nouveau parcours</h1>
+                <p class="subtitle">Configurez les informations et le nombre de balises intermédiaires.</p>
+            </div>
+            <a href="{{ path('app_parcours') }}" class="btn">Retour</a>
+        </div>
 
-<div class="form-parcours">
-{{ form_start(form) }}
-<input type="hidden" name="beacon_count" id="beacon_count">
+        <div class="form-stack">
+            {{ form_start(form) }}
+                <input type="hidden" name="beacon_count" id="beacon_count" value="1">
 
-<div>
-    <label>Nom</label>
-    {{ form_widget(form.name_map) }}
-</div>
+                <div class="field-group">
+                    <label for="{{ form.name_map.vars.id }}">Nom du parcours</label>
+                    {{ form_widget(form.name_map) }}
+                </div>
 
-<div>
-    <label>Description</label>
-    {{ form_widget(form.description) }}
-</div>
+                <div class="field-group">
+                    <label for="{{ form.description.vars.id }}">Description</label>
+                    {{ form_widget(form.description) }}
+                </div>
 
+                <div class="form-section">
+                    <h3>Génération du parcours</h3>
+                    <p class="subtitle">Le parcours inclut automatiquement 1 départ et 1 arrivée.</p>
 
-<h3>Génération du parcours</h3>
+                    <div class="field-inline">
+                        <label for="beacon-count">Balises intermédiaires</label>
+                        <input type="number" id="beacon-count" min="0" value="1">
+                    </div>
 
-<div>
-    <label>Nombre de balises intermédiaires</label>
-    <input type="number" id="beacon-count" min="0" value="1">
-</div>
+                    <button type="button" id="generate-beacons" class="btn">Générer le parcours</button>
+                    <p id="feedback" class="feedback-box"></p>
+                </div>
 
-<button type="button" id="generate-beacons">
-    Générer le parcours
-</button>
-
-<p id="feedback" style="margin-top:10px;color:green;"></p>
-
-<br><br>
-
-<button type="submit">Valider</button>
-
-{{ form_end(form) }}
+                <button type="submit" class="btn edit">Créer le parcours</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 </div>
 
 <script>
@@ -55,7 +64,7 @@ document.getElementById('generate-beacons').addEventListener('click', function (
     const total = count + 2; // départ + arrivée
 
     document.getElementById('feedback').innerText =
-        "✔ Parcours généré avec " + total + " balises (1 départ + " + count + " intermédiaires + 1 arrivée)";
+        "Parcours généré avec " + total + " balises (1 départ + " + count + " intermédiaires + 1 arrivée).";
     document.getElementById('beacon_count').value = count;
 });
 

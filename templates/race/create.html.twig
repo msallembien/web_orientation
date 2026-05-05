@@ -3,29 +3,37 @@
 {% block title %}Créer une course{% endblock %}
 
 {% block body %}
+{% include 'partials/_main_nav.html.twig' %}
 
 <div class="container">
-    <h1>Créer une course</h1>
+    <div class="page-card form-card">
+        <div class="topbar">
+            <div>
+                <h1>Créer une course</h1>
+                <p class="subtitle">Selectionnez un parcours pret pour lancer une nouvelle course.</p>
+            </div>
+            <a href="{{ path('app_race') }}" class="btn">Retour</a>
+        </div>
 
-    <form method="post">
-        
-        <label>Choisir un parcours (READY uniquement)</label>
+        {% if maps|length == 0 %}
+            <div class="empty-state">
+                Aucun parcours "READY" disponible. Preparez un parcours puis revenez ici.
+            </div>
+        {% else %}
+            <form method="post" class="form-stack">
+                <div class="field-group">
+                    <label for="map_id">Choisir un parcours</label>
+                    <select id="map_id" name="map_id" required>
+                        {% for map in maps %}
+                            <option value="{{ map.id }}">{{ map.nameMap }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-        <select name="map_id" required>
-            {% for map in maps %}
-                <option value="{{ map.id }}">
-                    {{ map.nameMap }}
-                </option>
-            {% else %}
-                <option disabled>Aucun parcours READY</option>
-            {% endfor %}
-        </select>
-
-        <br><br>
-
-        <button class="btn edit">Créer la course</button>
-
-    </form>
+                <button class="btn edit" type="submit">Créer la course</button>
+            </form>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}
