@@ -24,7 +24,11 @@ final class ParcoursController extends AbstractController
     #[Route('/parcours', name: 'app_parcours')]
     public function index(EntityManagerInterface $em): Response
     {
-        $map = $em->getRepository(mapEntity::class)->findAll();
+        $user = $this->getUser();
+
+        $map = $em->getRepository(mapEntity::class)->findBy([
+            'establishment' => $user->getIdestablishments()
+        ]);
 
         return $this->render('parcours/index.html.twig', [
             'maps' => $map,
@@ -33,6 +37,11 @@ final class ParcoursController extends AbstractController
     #[Route('/parcours/details_parcours/{id}', name: 'app_map_details')]
     public function details(mapEntity $map): Response
     {
+        $user = $this->getUser();
+
+        if ($map->getEstablishment() !== $user->getIdestablishments()) {
+            throw $this->createAccessDeniedException();
+        }
         $ready = 0;
         $r = false;
 
@@ -84,8 +93,10 @@ final class ParcoursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+        $user = $this->getUser();
         $map->setCreatedAt(new \DateTime());
         $map->setStatus('draft');
+        $map->setEstablishment($user->getIdestablishments());
         $count = $request->request->get('beacon_count', 1);
 
         // Départ

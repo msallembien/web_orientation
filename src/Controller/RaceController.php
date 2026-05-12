@@ -19,7 +19,15 @@ final class RaceController extends AbstractController
     #[Route('/race', name: 'app_race')]
     public function index(EntityManagerInterface $em): Response
     {
-        $race = $em->getRepository(Race::class)->findAll();
+        $user = $this->getUser();
+
+        $race = $em->getRepository(Race::class)
+            ->createQueryBuilder('r')
+            ->join('r.id_map', 'm')
+            ->where('m.establishment = :establishment')
+            ->setParameter('establishment', $user->getIdestablishments())
+            ->getQuery()
+            ->getResult();
 
         return $this->render('race/index.html.twig', [
             'races' => $race,
@@ -29,6 +37,11 @@ final class RaceController extends AbstractController
     #[Route('/race/details_race/{id}', name: 'app_race_details')]
     public function details(Race $race, EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
+
+        if ($race->getIdMap()->getEstablishment() !== $user->getIdestablishments()) {
+            throw $this->createAccessDeniedException();
+        }
         $runners = $em->getRepository(Runner::class)->findBy([
             'id_race' => $race
         ]);
@@ -99,8 +112,11 @@ final class RaceController extends AbstractController
     public function create(Request $request, EntityManagerInterface $em): Response
     {
         // 🔍 récupérer uniquement les parcours READY
+        $user = $this->getUser();
+
         $maps = $em->getRepository(mapEntity::class)->findBy([
-            'status' => 'READY'
+            'status' => 'READY',
+            'establishment' => $user->getIdestablishments()
         ]);
 
         if ($request->isMethod('POST')) {
